@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { getSubjectSelected, inputSubject, removeSubject } from '../utility/playwrightHandle';
+import { gotoWebsite, getSubjectSelected, inputSubject, removeSubject } from '../utility/playwrightHandle';
 import { randomSubjects } from '../utility/randomTools';
 
 const subjectsRandom = randomSubjects(2);
 
 test.describe('Subjects test', () => {
     test(`subjects can be show multiple when selected more than one`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputSubject(page, subjectsRandom);
 
         // Get all subjects that entered on website
@@ -15,7 +15,7 @@ test.describe('Subjects test', () => {
     });
 
     test(`subjects can show removeable button for each subject after selected`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputSubject(page, subjectsRandom);
 
         // Get all subjects that entered on website

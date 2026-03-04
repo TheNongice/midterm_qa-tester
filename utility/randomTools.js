@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import readCSV from '../utility/readCSV';
 import Person from '../models/Person';
 import locateState from '../datasets/location_state.json';
@@ -18,9 +20,9 @@ export function randomOptionsAddress() {
 
 export function randomHobbies() {
     return {
-        sports: Math.floor(Math.random()),
-        reading: Math.floor(Math.random()),
-        music: Math.floor(Math.random()),
+        sports: Math.floor(Math.random() * 2),
+        reading: Math.floor(Math.random() * 2),
+        music: Math.floor(Math.random() * 2),
     };
 }
 
@@ -33,4 +35,11 @@ export function randomSubjects(amount) {
     }
 
     return subjects.sort();
+}
+
+export function randomImage() {
+    const imageDir = path.join(process.cwd(), 'datasets');
+    const files = fs.readdirSync(imageDir).filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
+    const randomIdx = Math.floor(Math.random() * files.length);
+    return files[randomIdx];
 }

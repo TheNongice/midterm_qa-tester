@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { inputFullProfile } from '../utility/playwrightHandle';
+import { gotoWebsite, inputFullProfile } from '../utility/playwrightHandle';
 import { randomPerson } from '../utility/randomTools';
 
 const instance = randomPerson();
 
 test.describe('Fields Validation', () => {
     test(`mobile digits enter with 10 digits`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
         await expect(await page.getByRole('textbox', { name: 'Mobile Number' }).inputValue()).toEqual(instance.mobile_no);
 
@@ -18,7 +18,7 @@ test.describe('Fields Validation', () => {
         const realTel = instance.mobile_no;
         instance.mobile_no = realTel.substring(0, 9);
 
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
 
         await page.getByRole('button', { name: 'Submit' }).click();
@@ -31,7 +31,7 @@ test.describe('Fields Validation', () => {
         const realTel = instance.mobile_no;
         instance.mobile_no = realTel + '1';
 
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
 
         await page.getByRole('button', { name: 'Submit' }).click();
@@ -44,7 +44,7 @@ test.describe('Fields Validation', () => {
         const realTel = instance.mobile_no;
         instance.mobile_no = realTel.substring(0, 8) + '$A';
 
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
 
         await page.getByRole('button', { name: 'Submit' }).click();
@@ -54,7 +54,7 @@ test.describe('Fields Validation', () => {
     });    
 
     test(`email is enter with valid structure`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
         await expect(await page.getByRole('textbox', { name: 'name@example.com' }).inputValue()).toEqual(instance.email);
 
@@ -65,7 +65,7 @@ test.describe('Fields Validation', () => {
     test(`email is enter with invalid (forgot fill @)`, async ({ page }) => {
         const realMail = instance.email;
         instance.email = 'tempgmail.com';
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
 
         await page.getByRole('button', { name: 'Submit' }).click();
@@ -76,7 +76,7 @@ test.describe('Fields Validation', () => {
     test(`email is enter with invalid (domain extension)`, async ({ page }) => {
         const realMail = instance.email;
         instance.email = 'temp@gmail.commmm';
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
 
         // Extension more than 5 character
         await inputFullProfile(page, instance);

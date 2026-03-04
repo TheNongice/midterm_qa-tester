@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { randomHobbies, randomOptionsAddress, 
-        randomPerson, randomSubjects
+        randomPerson, randomSubjects, randomImage
 } from '../utility/randomTools';
-import { attachPhotos, checkHobbies, inputFullProfile,
+import { gotoWebsite, attachPhotos, checkHobbies, inputFullProfile,
         inputSubject, readSubmitDetails, selectOptionsAddress 
 } from '../utility/playwrightHandle';
 
@@ -10,34 +10,35 @@ const instance = randomPerson();
 const stateCity = randomOptionsAddress();
 const hobbiesList = randomHobbies();
 const subjectList = randomSubjects(1);
+const imageName = randomImage();
 
 test('should submit normally with enter every input', async ({ page }) => {
-  await page.goto('https://demoqa.com/automation-practice-form/');
+  await gotoWebsite(page);
   await inputFullProfile(page, instance);
 
   await checkHobbies(page, hobbiesList);
   await inputSubject(page, subjectList);
   await selectOptionsAddress(page, stateCity);
-  await attachPhotos(page, 'radiohead.png');
+  await attachPhotos(page, imageName);
 
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.locator('#example-modal-sizes-title-lg')).toContainText('Thanks for submitting the form');
-  await readSubmitDetails(page, instance, stateCity, hobbiesList, subjectList);
+  await readSubmitDetails(page, expect, instance, stateCity, hobbiesList, subjectList, imageName);
 });
 
 test('should submit normally when only entered mandatory fields', async ({ page }) => {
   instance.address = '';
-  await page.goto('https://demoqa.com/automation-practice-form/');
+  await gotoWebsite(page);
   await inputFullProfile(page, instance);
 
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.locator('#example-modal-sizes-title-lg')).toContainText('Thanks for submitting the form');
-  await readSubmitDetails(page, instance);
+  await readSubmitDetails(page, expect, instance);
 });
 
 /*
 test('should collect all available subjects without duplicates', async ({ page }) => {
-  await page.goto('https://demoqa.com/automation-practice-form/');
+  await gotoWebsite(page);
   await page.locator('.subjects-auto-complete__input-container').click();
   let subject = new Set();
   let char = 'A';

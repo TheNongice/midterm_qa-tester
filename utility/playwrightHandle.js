@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
 import path from 'path';
 
+export async function gotoWebsite(page) {
+    await page.goto('https://demoqa.com/automation-practice-form/');
+}
+
 export async function inputFullProfile(page, instance) {
     await page.getByRole('textbox', { name: 'First Name' }).fill(instance.fname);
     await page.getByRole('textbox', { name: 'Last Name' }).fill(instance.lname);
@@ -103,43 +107,48 @@ export async function attachPhotos(page, filename) {
     await page.getByRole('button', { name: 'Choose File' }).setInputFiles(path.join(__dirname, `../datasets/${filename}`));
 }
 
-export async function readSubmitDetails(page, instance, states, activity, subject) {
+export async function readSubmitDetails(page, expect, instance, states, activity, subject, imageUpload) {
     const dialogXPath = 'xpath=/html/body/div[4]/div/div/div[2]/div/table/tbody//tr/td[2]';
     const actionElement = await page.locator(dialogXPath).all();
-    for (let idx=0; idx<10; idx++) {
-        if (idx == 7)
-            continue;
-        const ele = await actionElement[idx].innerText();
-        if (ele == `${instance.fname} ${instance.lname}`)
-            continue;
-        else if (ele == instance.email)
-            continue;
-        else if (ele == instance.sex)
-            continue;
-        else if (ele == instance.mobile_no)
-            continue;
-        else if (dayjs(ele).format("D MMM YYYY") == dayjs(instance.birthdate).format("D MMM YYYY"))
-            continue;
-        else if (subject != null && JSON.stringify(ele.split(',').map((e) => e.trim()).sort()) == JSON.stringify(subject.sort()))
-            continue;
-        else if (activity != null && idx == 6) {
-            let box = [];
-            if (activity.sports)
-                box.push('Sports');
-            if (activity.music)
-                box.push('Music');
-            if (activity.reading)
-                box.push('Reading');
-            box.sort();
-            let htmlResult = ele.split(',').map(item => item.trim()).sort();
-            if (JSON.stringify(box) == JSON.stringify(htmlResult))
-                continue;
-        }
-        else if (ele == instance.address)
-            continue;
-        else if (states != null && ele == `${states.states} ${states.city}`)
-            continue;
-        else 
-            throw new Error(`Invalid to check '${ele}' with any table fields (idx=${idx})`);
+
+    await expect(page.getByRole("cell", { name: instance.fname + " " + instance.lname })).toBeVisible();
+    await expect(page.getByRole("cell", { name: instance.email })).toBeVisible();
+    await expect(page.getByRole("cell", { name: instance.sex })).toBeVisible();
+    await expect(page.getByRole("cell", { name: instance.mobile_no })).toBeVisible();
+    await expect(page.getByRole("cell", { name: dayjs(instance.birthdate).format("D MMMM,YYYY") })).toBeVisible();
+    
+    if (instance.address)
+        await expect(page.getByRole("cell", { name: instance.address })).toBeVisible();
+    
+    // Subject check
+    if (subject) {
+        const subjectWeb = String(await actionElement[5].innerText()).split(',').map((e) => e.trim()).sort();
+        await expect(subjectWeb).toEqual(subject.sort());
     }
+
+    // Hobby check
+    if (activity) {
+        const hobbiesWeb = String(await actionElement[6].innerText()).split(',').map((e) => e.trim()).sort();
+        if (hobbiesWeb[ hobbiesWeb.length-1 ] == '')
+            hobbiesWeb.pop();
+        let hobbiesDeclared = [];
+        if (activity.sports)
+            hobbiesDeclared.push('Sports');
+        if (activity.music)
+            hobbiesDeclared.push('Music');
+        if (activity.reading)
+            hobbiesDeclared.push('Reading');
+        hobbiesDeclared.sort();
+        await expect(hobbiesWeb).toEqual(hobbiesDeclared);
+    }
+    
+    // Upload file check
+    if (imageUpload && imageUpload.split('/').length == 1)
+        await expect(page.getByRole("cell", { name: imageUpload })).toBeVisible();
+    else if (imageUpload) {
+        await expect(page.getByRole("cell", { name: imageUpload.split('/')[1] })).toBeVisible();
+    }
+
+    if (states)
+        await expect(page.getByRole("cell", { name: states.states + " " + states.city })).toBeVisible();
 }

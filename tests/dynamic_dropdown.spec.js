@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { checkHobbies, inputFullProfile, selectOptionsAddress } from '../utility/playwrightHandle';
+import { gotoWebsite, checkHobbies, inputFullProfile, selectOptionsAddress } from '../utility/playwrightHandle';
 import location from '../datasets/location_state.json';
 import { randomPerson } from '../utility/randomTools';
 
@@ -7,7 +7,7 @@ const instance = randomPerson();
 
 test.describe('Dynamic dropdown check', () => {
     test(`city shouldn't click before stated is selected`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
         await checkHobbies(page, {sports: true, music: true});
 
@@ -16,7 +16,7 @@ test.describe('Dynamic dropdown check', () => {
     });
     
     test(`city should click after stated is selected`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
         await checkHobbies(page, {sports: true, music: true});
         
@@ -28,7 +28,7 @@ test.describe('Dynamic dropdown check', () => {
     });
 
     test(`city should show by assosicated with state`, async ({ page }) => {
-        await page.goto('https://demoqa.com/automation-practice-form/');
+        await gotoWebsite(page);
         await inputFullProfile(page, instance);
         await checkHobbies(page, {sports: true, music: true});
 
