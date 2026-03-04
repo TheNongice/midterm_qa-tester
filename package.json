@@ -1,0 +1,22 @@
+{
+  "name": "midterm_as",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "codegen": "playwright codegen"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.0",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.2"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "dayjs": "^1.11.19"
+  }
+}
