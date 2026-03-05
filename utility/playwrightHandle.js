@@ -107,6 +107,11 @@ export async function attachPhotos(page, filename) {
     await page.getByRole('button', { name: 'Choose File' }).setInputFiles(path.join(__dirname, `../datasets/${filename}`));
 }
 
+export async function checkSuccessModal(page, expect) {
+    await expect(page.locator('#example-modal-sizes-title-lg')).toBeVisible();
+    await expect(page.locator('#example-modal-sizes-title-lg')).toContainText('Thanks for submitting the form');
+}
+
 export async function readSubmitDetails(page, expect, instance, states, activity, subject, imageUpload) {
     const dialogXPath = 'xpath=/html/body/div[4]/div/div/div[2]/div/table/tbody//tr/td[2]';
     const actionElement = await page.locator(dialogXPath).all();

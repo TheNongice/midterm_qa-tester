@@ -3,7 +3,7 @@ import { randomHobbies, randomOptionsAddress,
         randomPerson, randomSubjects, randomImage
 } from '../utility/randomTools';
 import { gotoWebsite, attachPhotos, checkHobbies, inputFullProfile,
-        inputSubject, readSubmitDetails, selectOptionsAddress 
+        inputSubject, readSubmitDetails, selectOptionsAddress, checkSuccessModal 
 } from '../utility/playwrightHandle';
 
 const instance = randomPerson();
@@ -12,28 +12,30 @@ const hobbiesList = randomHobbies();
 const subjectList = randomSubjects(1);
 const imageName = randomImage();
 
-test('should submit normally with enter every input', async ({ page }) => {
-  await gotoWebsite(page);
-  await inputFullProfile(page, instance);
-
-  await checkHobbies(page, hobbiesList);
-  await inputSubject(page, subjectList);
-  await selectOptionsAddress(page, stateCity);
-  await attachPhotos(page, imageName);
-
-  await page.getByRole('button', { name: 'Submit' }).click();
-  await expect(page.locator('#example-modal-sizes-title-lg')).toContainText('Thanks for submitting the form');
-  await readSubmitDetails(page, expect, instance, stateCity, hobbiesList, subjectList, imageName);
-});
-
-test('should submit normally when only entered mandatory fields', async ({ page }) => {
-  instance.address = '';
-  await gotoWebsite(page);
-  await inputFullProfile(page, instance);
-
-  await page.getByRole('button', { name: 'Submit' }).click();
-  await expect(page.locator('#example-modal-sizes-title-lg')).toContainText('Thanks for submitting the form');
-  await readSubmitDetails(page, expect, instance);
+test.describe('TC1: Submitted form', () => {
+  test('TC1.1: should submit normally with enter every input', async ({ page }) => {
+    await gotoWebsite(page);
+    await inputFullProfile(page, instance);
+  
+    await checkHobbies(page, hobbiesList);
+    await inputSubject(page, subjectList);
+    await selectOptionsAddress(page, stateCity);
+    await attachPhotos(page, imageName);
+  
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await checkSuccessModal(page, expect);
+    await readSubmitDetails(page, expect, instance, stateCity, hobbiesList, subjectList, imageName);
+  });
+  
+  test('TC1.2: should submit normally when only entered mandatory fields', async ({ page }) => {
+    instance.address = '';
+    await gotoWebsite(page);
+    await inputFullProfile(page, instance);
+  
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await checkSuccessModal(page, expect);
+    await readSubmitDetails(page, expect, instance);
+  });
 });
 
 /*

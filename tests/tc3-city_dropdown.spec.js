@@ -1,25 +1,16 @@
 import { test, expect } from '@playwright/test';
-import { gotoWebsite, checkHobbies, inputFullProfile, selectOptionsAddress } from '../utility/playwrightHandle';
+import { gotoWebsite, selectOptionsAddress } from '../utility/playwrightHandle';
 import location from '../datasets/location_state.json';
-import { randomPerson } from '../utility/randomTools';
 
-const instance = randomPerson();
-
-test.describe('Dynamic dropdown check', () => {
-    test(`city shouldn't click before stated is selected`, async ({ page }) => {
+test.describe('TC3: City/State dropdown check', () => {
+    test(`TC3.1: city shouldn't disabled until stated is selected`, async ({ page }) => {
         await gotoWebsite(page);
-        await inputFullProfile(page, instance);
-        await checkHobbies(page, {sports: true, music: true});
-
         // Check city dropdown shouldn't click.
         await expect(await page.locator('#city > .css-16xfy0z-control').getAttribute('aria-disabled')).toEqual("true");
     });
     
-    test(`city should click after stated is selected`, async ({ page }) => {
+    test(`TC3.2: city should enabled after stated is selected`, async ({ page }) => {
         await gotoWebsite(page);
-        await inputFullProfile(page, instance);
-        await checkHobbies(page, {sports: true, music: true});
-        
         await selectOptionsAddress(page, {states: 'NCR', city: null});
         
         // Check city dropdown should click.
@@ -27,10 +18,8 @@ test.describe('Dynamic dropdown check', () => {
         await expect(await page.locator('#city > .css-t3ipsp-control')).toBeVisible();
     });
 
-    test(`city should show by assosicated with state`, async ({ page }) => {
+    test(`TC3.3: city should show by assosicated with state`, async ({ page }) => {
         await gotoWebsite(page);
-        await inputFullProfile(page, instance);
-        await checkHobbies(page, {sports: true, music: true});
 
         const stateNo = Math.floor(Math.random() * Object.keys(location.state).length);
         await selectOptionsAddress(page, {states: location.state[stateNo].name, city: null});
@@ -44,6 +33,6 @@ test.describe('Dynamic dropdown check', () => {
             cityInWeb.sort();
         }
         let cityInJson = location.state[stateNo].city.sort();
-        await expect(JSON.stringify(cityInJson)).toEqual(JSON.stringify(cityInWeb));
+        await expect(cityInJson).toEqual(cityInWeb);
     });
 });

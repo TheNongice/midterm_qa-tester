@@ -1,3 +1,34 @@
 fname,lname,email,sex,mobile_no,birthdate,address
-John,Doe,john@github.com,M,0991234567,08/08/2005,46 Jarwal
-Jane,Doe,jane@gitlab.com,F,0999999999,01/12/2003,96 Thailand
+Michael,Smith,michael.smith@gmail.com,M,0912345678,15/03/2004,"123 Sunset Street
+Los Angeles, CA"
+Emily,Johnson,emily.johnson@yahoo.com,F,0923456789,22/07/2002,"45 Maple Avenue
+New York, NY"
+Daniel,Williams,daniel.williams@outlook.com,M,0934567890,09/11/2001,"78 Ocean Drive Miami, FL"
+Olivia,Brown,olivia.brown@gmail.com,F,0945678901,30/01/2005,"12 Green Park
+Chicago, IL"
+Matthew,Jones,matthew.jones@protonmail.com,M,0956789012,17/05/2003,"890 Hill Road Dallas, TX"
+Sophia,Garcia,sophia.garcia@gmail.com,F,0967890123,04/09/2000,"34 River Lane
+Seattle, WA"
+Christopher,Miller,chris.miller@hotmail.com,M,0978901234,12/12/1999,"56 Mountain View Denver, CO"
+Ava,Davis,ava.davis@yahoo.com,F,0989012345,28/02/2004,"77 Lake Street
+Boston, MA"
+Andrew,Rodriguez,andrew.rod@gmail.com,M,0990123456,06/06/2002,"19 Forest Road Atlanta, GA"
+Isabella,Martinez,isabella.martinez@icloud.com,F,0901234567,19/10/2003,"222 Palm Avenue
+Phoenix, AZ"
+Joshua,Hernandez,joshua.h@gmail.com,M,0911122233,03/04/2001,"400 King Street
+San Francisco, CA"
+Mia,Lopez,mia.lopez@gmail.com,F,0922233344,14/08/2005,"88 Queen Road
+Portland, OR"
+Ethan,Gonzalez,ethan.gonzalez@outlook.com,M,0933344455,25/12/2000,"16 Cedar Street
+Houston, TX"
+Charlotte,Wilson,charlotte.wilson@gmail.com,F,0944455566,11/09/2004,"250 Birch Avenue Orlando, FL"
+Alexander,Anderson,alex.anderson@yahoo.com,M,0955566677,07/07/2003,"73 Spruce Lane
+Las Vegas, NV"
+Amelia,Thomas,amelia.thomas@gmail.com,F,0966677788,21/03/2002,"910 Willow Drive San Diego, CA"
+Benjamin,Taylor,ben.taylor@protonmail.com,M,0977788899,18/01/1999,"61 Highland Road
+Austin, TX"
+Harper,Moore,harper.moore@gmail.com,F,0988899900,29/06/2005,"305 Sunset Boulevard
+Los Angeles, CA"
+William,Jackson,william.jackson@hotmail.com,M,0999900011,02/02/2001,"14 Liberty Street Philadelphia, PA"
+Ella,Martin,ella.martin@gmail.com,F,0901011122,16/11/2004,"99 Broadway
+New York, NY"
