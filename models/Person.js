@@ -3,6 +3,20 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat);
 
 export default class Person {
+    /** @type {string} */
+    fname;
+    /** @type {string} */
+    lname;
+    /** @type {string} */
+    email;
+    /** @type {string} */
+    mobile_no;
+    /** @type {string} */
+    birthdate;
+    /** @type {string} */
+    address;
+    /** @type {string} */
+    sex;
     constructor(fname, lname, email, sex, mobile_no, birthdate, address) {
         this.fname = fname;
         this.lname = lname;

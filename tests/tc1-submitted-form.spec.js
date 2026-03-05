@@ -1,10 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { randomHobbies, randomOptionsAddress, 
         randomPerson, randomSubjects, randomImage
 } from '../utility/randomTools';
-import { gotoWebsite, attachPhotos, checkHobbies, inputFullProfile,
-        inputSubject, readSubmitDetails, selectOptionsAddress, checkSuccessModal 
-} from '../utility/playwrightHandle';
+import { RegisterPage } from '../pages/RegisterPage';
 
 const instance = randomPerson();
 const stateCity = randomOptionsAddress();
@@ -13,28 +11,27 @@ const subjectList = randomSubjects(1);
 const imageName = randomImage();
 
 test.describe('TC1: Submitted form', () => {
+  /** @type {import('../pages/RegisterPage').RegisterPage} */
+  let Controller;
+  test.beforeEach(async ({ page }) => {
+    Controller = new RegisterPage(page);
+    await Controller.openWebsite();
+  });
+
   test('TC1.1: should submit normally with enter every input', async ({ page }) => {
-    await gotoWebsite(page);
-    await inputFullProfile(page, instance);
-  
-    await checkHobbies(page, hobbiesList);
-    await inputSubject(page, subjectList);
-    await selectOptionsAddress(page, stateCity);
-    await attachPhotos(page, imageName);
-  
-    await page.getByRole('button', { name: 'Submit' }).click();
-    await checkSuccessModal(page, expect);
-    await readSubmitDetails(page, expect, instance, stateCity, hobbiesList, subjectList, imageName);
+    await Controller.inputFullProfile(instance);
+    await Controller.inputMandatoryFields(hobbiesList, subjectList, stateCity, imageName);
+    await Controller.submit();
+    await Controller.checkSuccessModal(true);
+    await Controller.readSubmitDetails(instance, stateCity, hobbiesList, subjectList, imageName);
   });
   
   test('TC1.2: should submit normally when only entered mandatory fields', async ({ page }) => {
     instance.address = '';
-    await gotoWebsite(page);
-    await inputFullProfile(page, instance);
-  
-    await page.getByRole('button', { name: 'Submit' }).click();
-    await checkSuccessModal(page, expect);
-    await readSubmitDetails(page, expect, instance);
+    await Controller.inputFullProfile(instance);
+    await Controller.submit();
+    await Controller.checkSuccessModal(true);
+    await Controller.readSubmitDetails(instance);
   });
 });
 
